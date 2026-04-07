@@ -1,11 +1,16 @@
-# weather-cli-copilot
+# AI-DLC-Copilot-CLI
+
+> このドキュメントは**実装計画および開発規約**を記載したものです。
+> 記載されている機能やディレクトリ構造は実装予定のものであり、現在はまだ存在しない場合があります。
 
 ## プロジェクト概要
+
 Open-Meteo APIを使った天気取得CLIツール。
 GitHub Copilot CLIとIssue駆動開発（AI-DLC）を体験するためのデモ用リポジトリ。
 「要件 → 設計 → Issue → テスト → 実装」のサイクルをCopilot CLIで回すことが目的。
 
 ## 技術スタック
+
 - Python 3.12+
 - uv（パッケージ管理・実行）
 - click 8.1+（CLIフレームワーク）
@@ -13,7 +18,8 @@ GitHub Copilot CLIとIssue駆動開発（AI-DLC）を体験するためのデモ
 - rich 13.0+（ターミナル出力）
 - pytest + pytest-httpx（テスト）
 
-## ディレクトリ構造
+## 実装予定のディレクトリ構造
+
 - `src/weather/` - メインロジック
   - `cli.py` - CLIエントリポイント（clickのみ）
   - `api.py` - 外部API呼び出し（fetch_location / fetch_weather）
@@ -25,32 +31,38 @@ GitHub Copilot CLIとIssue駆動開発（AI-DLC）を体験するためのデモ
 - `.github/workflows/` - CI設定
 
 ## 開発フロー
+
 タスクはdocs/tasks.mdおよびGitHub Issueで管理する。
 実装順序: 例外定義 → API → フォーマッター → CLI → エラーハンドリング
 
-## コーディング規約
+## コーディング規約（概要）
+
+詳細は `.github/instructions/` 配下の各ファイルを参照。
+
+**基本方針:**
 - 型ヒントを全ての関数に付ける
 - docstringはGoogle形式で書く
 - 外部API呼び出しはapi.pyに集約し、cli.pyには書かない
 - 例外は握り潰さずraiseする（WeatherCliErrorの派生クラスを使う）
-- f-stringを使う（.format()や%は使わない）
-- pathlib.Pathを使う（os.pathは使わない）
 
-## テスト規約
-- pytest-httpxでHTTP通信をモック化し、外部API依存をなくす
-- 共通fixtureはtests/conftest.pyに定義する
-- テストファイルはモジュールと1対1で対応させる
+**Python規約の詳細**: `.github/instructions/python.instructions.md`
+**テスト規約の詳細**: `.github/instructions/tests.instructions.md`
+**ドキュメント規約の詳細**: `.github/instructions/docs.instructions.md`
 
-## 実行コマンド
+## 実装後に使用可能になるコマンド
+
+以下のコマンドは実装完了後に使用可能になります。
+
 ```bash
-uv sync                          # 依存関係インストール
-uv run weather <都市名>           # CLI実行
-uv run pytest tests/ -v 2>&1 | copilot "テスト失敗の原因を教えて"         # テスト実行
-bash scripts/watch_and_test.sh   # ファイル監視＋自動テスト（macOS/WSL）
-gh workflow run ci.yml           # CI手動トリガー
-gh run view [id] --log-failed | copilot "このエラーを説明して修正案を出して"  # 失敗ログ解析
+uv sync                                                   # 依存関係インストール
+uv run weather <都市名>                                    # CLI実行
+uv run pytest tests/ -v | copilot -p "テストの成否を判断して、失敗している場合は原因と修正案を教えて"  # テスト実行
+bash scripts/watch_and_test.sh                            # ファイル監視＋自動テスト（macOS/WSL）
+gh workflow run ci.yml                                    # CI手動トリガー
+gh run view [id] --log-failed | copilot -p "このエラーを説明して修正案を出して"  # 失敗ログ解析
 ```
 
 ## 対応環境
+
 - macOS（Apple Silicon / Intel）
 - Windows WSL2（Ubuntu 22.04+）
