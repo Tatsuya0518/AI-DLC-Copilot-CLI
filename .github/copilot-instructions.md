@@ -48,7 +48,7 @@ uv run weather <都市名>           # CLI実行
 uv run pytest tests/ -v          # テスト実行
 bash scripts/watch_and_test.sh   # ファイル監視＋自動テスト（macOS/WSL）
 gh workflow run ci.yml           # CI手動トリガー
-gh run view [id] --log-failed | gh copilot explain  # 失敗ログ解析
+gh run view [id] --log-failed | copilot explain  # 失敗ログ解析
 ```
 
 ## 対応環境
