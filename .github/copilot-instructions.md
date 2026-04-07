@@ -45,10 +45,10 @@ GitHub Copilot CLIとIssue駆動開発（AI-DLC）を体験するためのデモ
 ```bash
 uv sync                          # 依存関係インストール
 uv run weather <都市名>           # CLI実行
-uv run pytest tests/ -v          # テスト実行
+uv run pytest tests/ -v 2>&1 | copilot "テスト失敗の原因を教えて"         # テスト実行
 bash scripts/watch_and_test.sh   # ファイル監視＋自動テスト（macOS/WSL）
 gh workflow run ci.yml           # CI手動トリガー
-gh run view [id] --log-failed | copilot explain  # 失敗ログ解析
+gh run view [id] --log-failed | copilot "このエラーを説明して修正案を出して"  # 失敗ログ解析
 ```
 
 ## 対応環境
